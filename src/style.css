@@ -1,0 +1,82 @@
+body {
+  font-family:Arial, Helvetica, sans-serif;
+	background-color: white;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+.backgroundContainer {
+  position: fixed;
+	top: 0;
+  width: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+  max-width: 600px;
+  margin: 0 auto;
+  overflow: hidden;
+	z-index: -1;
+}
+.backgroundImage {
+  width: 100%;
+  object-fit: contain;
+}
+.header{
+	display: flex;
+	flex-direction: column;
+
+	font-size: large;
+	font-weight: bold;
+	align-items: center;
+	background-color: rgba(198, 26, 26, 0.8);
+	color: rgba(255, 255, 255);
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+
+	position:fixed;
+	max-width: 600px;
+	width: 100%;
+
+	z-index: 1000;
+}
+.contentContainer{
+	display: flex;
+	flex-direction: column;
+	max-width: 600px;
+	margin: 100px auto 100px auto;
+	gap: 50px;
+}
+
+.parkingLot{
+	background-color: rgba(255, 255, 255, 0.8); /* 半透明白色 */
+  padding-top: 60px;
+	padding-bottom: 60px;
+	padding-left: 15px;
+	padding-right: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+	cursor: pointer;
+}
+.parkingLot h3 {
+  margin: 0 0 10px 0;
+}
+.buttonPosition {
+  position: fixed;
+	bottom: 5px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000;
+}
+
+.Button {
+  padding: 20px 15px;
+  font-size: 16px;
+	font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: rgba(2, 95, 255, 0.8);
+  border: rgba(2, 95, 255, 0.8);
+	border-style: solid;
+  border-radius: 40px;
+  cursor: pointer;
+}
