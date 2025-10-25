@@ -1,19 +1,19 @@
 const parkingData = {
     "曦园停车点": [
         {id: "A101", position: "东侧1号", battery:"85%"},
-        {id: "A101", position: "东侧1号", battery:"85%"}
+        {id: "A101", position: "东侧1号", battery:"90%"}
     ],
     "振声苑停车点": [
-        {id: "A101", position: "E座东侧1号", battery:"85%"},
-        {id: "A101", position: "E座东侧2号", battery:"85%"}
+        {id: "B101", position: "E座东侧1号", battery:"85%"},
+        {id: "B102", position: "E座东侧2号", battery:"90%"}
     ],
     "会文北楼停车点": [
-        {id: "A101", position: "东侧1号", battery:"85%"},
-        {id: "A101", position: "东侧1号", battery:"85%"}
+        {id: "C101", position: "东门2号", battery:"85%"},
+        {id: "C102", position: "东门2号", battery:"90%"}
     ],
     "图书馆停车点": [
-        {id: "A101", position: "东侧1号", battery:"85%"},
-        {id: "A101", position: "东侧1号", battery:"85%"}
+        {id: "D101", position: "西南角1号", battery:"85%"},
+        {id: "D102", position: "西南角2号", battery:"90%"}
     ],
 };
 
