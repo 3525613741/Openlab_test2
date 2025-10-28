@@ -1,30 +1,32 @@
 body {
-  font-family:Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	background-color: white;
 	margin: 0;
 	padding: 0;
 	position: relative;
 }
+  
 .backgroundContainer {
-  position: fixed;
+	position: fixed;
 	top: 0;
-  width: 100%;
+	width: 100%;
 	left: 50%;
 	transform: translateX(-50%);
-  max-width: 600px;
-  margin: 0 auto;
-  overflow: hidden;
+	max-width: 600px;
+	margin: 0 auto;
+	overflow: hidden;
 	z-index: -1;
 }
+  
 .backgroundImage {
-  width: 100%;
+	width: 100%;
 	height: auto;
-  object-fit: cover;
+	object-fit: cover;
 }
-.header{
+  
+.header {
 	display: flex;
 	flex-direction: column;
-
 	font-size: 1.2rem;
 	font-weight: bold;
 	align-items: center;
@@ -34,14 +36,13 @@ body {
 	padding-right: 10px;
 	padding-top: 15px;
 	padding-bottom: 15px;
-
-	position:fixed;
+	position: fixed;
 	max-width: 600px;
 	width: 100%;
-
 	z-index: 1000;
 }
-.contentContainer{
+  
+.contentContainer {
 	display: flex;
 	flex-direction: column;
 	max-width: 600px;
@@ -49,38 +50,72 @@ body {
 	gap: 50px;
 	padding: 0 1rem;
 }
-
-.parkingLot{
-	background-color: rgba(255, 255, 255, 0.8); /* 半透明白色 */
-  padding-top: 60px;
-	padding-bottom: 60px;
-	padding-left: 15px;
-	padding-right: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  
+.loading {
+	text-align: center;
+	padding: 40px;
+	font-size: 1rem;
+	color: rebeccapurple;
+}
+  
+.parkingLot {
+	background-color: rgba(255, 255, 255, 0.85);
+	padding-top: 30px;
+	padding-bottom: 30px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-radius: 10px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 	cursor: pointer;
+	transition: all 0.3s ease;
 }
+  
+.parkingLot:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+  
 .parkingLot h3 {
-  margin: 0 0 10px 0;
+	margin: 0 0 10px 0;
+	color: rgb(185, 31, 31);
+	font-size: 1.3rem;
 }
+  
+.parkingLot p {
+	margin: 8px 0;
+	color: black;
+}
+  
+.parkingLot .distance {
+	color: rgb(31, 88, 179);
+	font-weight: bold;
+	font-size: 1.1rem;
+}
+  
 .buttonPosition {
-  position: fixed;
-	bottom: 5px;
+	position: fixed;
+	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
 	z-index: 1000;
 }
-
+  
 .Button {
-  padding: 20px 15px;
-  font-size: 1rem;
+	padding: 15px 30px;
+	font-size: 1rem;
 	font-weight: bold;
-  background-color: rgba(255, 255, 255, 0.7);
-  color: rgba(2, 95, 255, 0.8);
-  border: rgba(2, 95, 255, 0.8);
-	border-style: solid;
-  border-radius: 40px;
-  cursor: pointer;
+	background-color: rgba(255, 255, 255, 0.9);
+	color: rgba(2, 95, 255, 0.9);
+	border: 2px solid rgba(2, 95, 255, 0.8);
+	border-radius: 40px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+  
+.Button:hover:not(:disabled) {
+	background-color: rgba(2, 95, 255, 0.9);
+	color: white;
+	transform: scale(1.05);
 }
 
 .popupOverlay {
@@ -93,57 +128,125 @@ body {
 	height: 100%;
 	align-items: center;
 	justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 2000;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 2000;
+	animation: fadeIn 0.3s ease;
 }
 
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+  
 .popup {
 	background: white;
-	padding: 20px 40px;
-	border-radius: 30px;
+	padding: 30px 40px;
+	border-radius: 20px;
 	max-width: 500px;
 	width: 90%;
-	box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.8);
+	max-height: 80vh;
+	overflow-y: auto;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	animation: slideUp 0.3s ease;
 }
+  
+@keyframes slideUp {
+	from {
+		transform: translateY(50px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+  
 .popup h3 {
-  margin-top: 10px;
+	margin-top: 0;
+	margin-bottom: 15px;
+	color: rgb(185, 31, 31);
+	font-size: 1.4rem;
 }
-
+  
+.popup .vehicleCount {
+	color: rgb(31, 88, 179);
+	font-weight: bold;
+	margin-bottom: 15px;
+}
+  
 .popup ul {
-  list-style: circle;
-  padding: 0;
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
-
+  
 .popup li {
-  margin-bottom: 10px;
+	margin-bottom: 15px;
+	padding: 12px;
+	background: #f5f5f5;
+	border-radius: 8px;
+	border-left: 4px solid rgb(31, 88, 179);
 }
-
-.closeButton{
+  
+.popup li strong {
+	color: black;
+	margin-right: 8px;
+}
+  
+.closeButton {
 	display: block;
-	margin: 20px auto 0px auto;
-  padding: 10px 20px;
-  border: none;
-  background: rgba(2, 95, 255, 0.8);
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
+	margin: 20px auto 0 auto;
+	padding: 12px 30px;
+	border: none;
+	background: rgba(2, 95, 255, 0.9);
+	color: white;
+	border-radius: 25px;
+	cursor: pointer;
+	font-size: 1rem;
+	font-weight: bold;
+	transition: all 0.3s ease;
+  }
+  
+.closeButton:hover {
+	background: rgba(2, 95, 255, 1);
+	transform: scale(1.05);
 }
-
+  
 @media (max-width: 480px) {
 	.header {
-			font-size: 1rem;
-			padding: 0.75rem;
+		font-size: 1rem;
+		padding: 12px;
 	}
+	  
 	.contentContainer {
-			margin: 100px auto 80px auto;
-			gap: 1rem;
-			padding: 0 0.5rem;
+		margin: 100px auto 80px auto;
+		gap: 30px;
+		padding: 0 0.5rem;
 	}
+	  
 	.parkingLot {
-			padding: 1rem;
+		padding: 20px 15px;
 	}
+	  
+	.parkingLot h3 {
+		font-size: 1.1rem;
+	}
+	  
 	.Button {
-			padding: 0.75rem 1rem;
-			font-size: 0.9rem;
+		padding: 12px 25px;
+		font-size: 0.9rem;
+	}
+	  
+	.popup {
+		padding: 20px 25px;
+		width: 85%;
+	}
+	  
+	.popup h3 {
+		font-size: 1.2rem;
 	}
 }
