@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
 	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"><!--响应式设计：设置viewport宽度等于设备宽度 设置初始缩放级别为1.0-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>地图找车</title>
 	<link rel="stylesheet" href="style.css">
+	<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=pmEiHxWExMjQk9E3VlaYOy4Zl11N8fF5"></script>
 </head>
+
 <body>
+	<!--设置背景 将header改为map按钮-->>
   <div class="backgroundContainer">
-		<div class="header">
-			我心我行澄如明镜
-		</div>
+		<button class="header mapButton" id="showMapBtn">
+			我心我行澄如明镜(点击有惊喜)
+		</button>
     <img src="../../res/images/Background.PNG" class="backgroundImage">
   </div>
+  	<!--地图界面设置 默认隐藏-->
+	<div class="mapContainer" style="display: none;" id="mapContainer">
+		<div class="mapHeader">
+			<button class="closeMapBtn" id="closeMapBtn">✕</button>
+			<h3>停车场地图导航</h3>
+		</div>
+		<div class="baiduMap" id="baiduMap"></div>
+		<div class="mapLegend">
+			<span>📍：当前位置</span>
+		</div>
+	</div>
 
+	<!-- 主页面设置 防止未加载出来一片空白-->
 	<div class="contentContainer" id="parkingContainer">
 		<div class="loading">加载中...</div>
 	</div>
 
+	<!--筛选按钮-->
 	<div class="buttonPosition">
 		<button class="Button" id="filterBtn">
 			寻找附近

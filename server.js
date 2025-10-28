@@ -7,15 +7,15 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-
+// 托管静态文件
 app.use(express.static(path.join(__dirname, 'src/public')));
 app.use('/res', express.static(path.join(__dirname, 'res')));
 
 const parkingLots = [
-    { name: "曦园停车点", lat: 36.360035, lng: 120.692168, info: "位于曦园正北靠近体育场" },
-    { name: "振声苑停车点", lat: 36.362047, lng: 120.687431, info: "位于振声苑E座入口处 敦品大道" },
-    { name: "会文北楼停车点", lat: 36.362072, lng: 120.692347, info: "位于会文北楼下正北靠近东门" },
-    { name: "图书馆停车点", lat: 36.366756, lng: 120.690647, info: "位于图书馆西南角" }
+    { name: "曦园停车点", lat: 36.365983, lng: 120.698848, info: "位于曦园正北靠近体育场" },
+    { name: "振声苑停车点", lat: 36.367984, lng: 120.693701, info: "位于振声苑E座入口处 敦品大道" },
+    { name: "会文北楼停车点", lat: 36.372686, lng: 120.698798, info: "位于会文北楼下正北靠近东门" },
+    { name: "图书馆停车点", lat: 36.371637, lng: 120.694757, info: "位于图书馆西南角" }
 ];
 // 随机生成车辆
 function generateVehicles() {
