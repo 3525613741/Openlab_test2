@@ -155,7 +155,9 @@ app.get('/api/parking-lots/:name/vehicles', (req, res) => {
         return {
             id: v.id,
             battery: v.battery,
-            distance: Math.round(distance) + 'm'
+            distance: Math.round(distance) + 'm',
+            lat: v.lat,
+            lng: v.lng
         };
     });
 
