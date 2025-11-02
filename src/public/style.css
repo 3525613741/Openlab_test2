@@ -9,11 +9,10 @@ body {
 .backgroundContainer {
 	position: fixed;
 	top: 0;
+	max-width: 600px;
 	width: 100%;
 	left: 50%;
 	transform: translateX(-50%);
-	max-width: 600px;
-	margin: 0 auto;
 	overflow: hidden;
 	z-index: -1;
 }
@@ -27,9 +26,9 @@ body {
 .header {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	font-size: 1.2rem;
 	font-weight: bold;
-	align-items: center;
 	background-color: rgba(198, 26, 26, 0.8);
 	color: rgba(255, 255, 255);
 	padding-left: 10px;
@@ -55,6 +54,8 @@ body {
 }
 
 .mapContainer {
+	display: flex;
+	flex-direction: column;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -62,15 +63,13 @@ body {
 	height: 100%;
 	background: white;
 	z-index: 3000;
-	display: flex;
-	flex-direction: column;
 }
 
 .mapHeader {
+	display: flex;
 	background-color: rgba(198, 26, 26, 0.95);
 	color: white;
 	padding: 15px;
-	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -105,19 +104,6 @@ body {
 	height: 100%;
 }
 
-.mapLegend {
-	background: rgba(255, 255, 255, 0.95);
-	padding: 10px 15px;
-	display: flex;
-	justify-content: space-around;
-	font-size: 0.9rem;
-	border-top: 1px solid #ddd;
-}
-
-.mapLegend span {
-	color: #666;
-}
-
 .contentContainer {
 	display: flex;
 	flex-direction: column;
@@ -131,7 +117,38 @@ body {
 	text-align: center;
 	padding: 40px;
 	font-size: 1.1rem;
-	color: #666;
+	color: white;
+}
+
+.buttonPosition {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000;
+}
+
+.filterBtn {
+	padding: 15px 30px;
+	font-size: 1rem;
+	font-weight: bold;
+	background-color: rgba(255, 255, 255, 0.9);
+	color: rgba(2, 95, 255, 0.9);
+	border: 2px solid rgba(2, 95, 255, 0.8);
+	border-radius: 40px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.filterBtn:hover:not(:disabled) {
+	background-color: rgba(2, 95, 255, 0.9);
+	color: white;
+	transform: scale(1.05);
+}
+
+.filterBtn:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
 }
 
 .parkingLot {
@@ -153,50 +170,19 @@ body {
 
 .parkingLot h3 {
 	margin: 0 0 10px 0;
-	color: #c61a1a;
+	color: rgb(198, 26, 26);
 	font-size: 1.3rem;
 }
 
 .parkingLot p {
 	margin: 8px 0;
-	color: #333;
+	color: rgb(51, 51, 51);
 }
 
 .parkingLot .distance {
-	color: #025fff;
+	color: rgb(2, 95, 255);
 	font-weight: bold;
 	font-size: 1.1rem;
-}
-
-.buttonPosition {
-	position: fixed;
-	bottom: 20px;
-	left: 50%;
-	transform: translateX(-50%);
-	z-index: 1000;
-}
-
-.Button {
-	padding: 15px 30px;
-	font-size: 1rem;
-	font-weight: bold;
-	background-color: rgba(255, 255, 255, 0.9);
-	color: rgba(2, 95, 255, 0.9);
-	border: 2px solid rgba(2, 95, 255, 0.8);
-	border-radius: 40px;
-	cursor: pointer;
-	transition: all 0.3s ease;
-}
-
-.Button:hover:not(:disabled) {
-	background-color: rgba(2, 95, 255, 0.9);
-	color: white;
-	transform: scale(1.05);
-}
-
-.Button:disabled {
-	opacity: 0.6;
-	cursor: not-allowed;
 }
 
 .popupOverlay {
@@ -251,12 +237,12 @@ body {
 .popup h3 {
 	margin-top: 0;
 	margin-bottom: 15px;
-	color: #c61a1a;
+	color: rgb(198, 26, 26);
 	font-size: 1.4rem;
 }
 
 .popup .vehicleCount {
-	color: #025fff;
+	color: rgb(2, 95, 255);
 	font-weight: bold;
 	margin-bottom: 15px;
 }
@@ -270,14 +256,34 @@ body {
 .popup li {
 	margin-bottom: 15px;
 	padding: 12px;
-	background: #f5f5f5;
+	background: rgb(245, 245, 245);
 	border-radius: 8px;
-	border-left: 4px solid #025fff;
+	border-left: 4px solid rgb(2, 95, 255);
 }
 
 .popup li strong {
-	color: #333;
+	color: rgb(51, 51, 51);
 	margin-right: 8px;
+}
+
+.navigationButton {
+	display: block;
+	margin: 10px auto 0 auto;
+	padding: 12px 30px;
+	border: 2px solid rgba(2, 95, 255, 0.9);
+	background: white;
+	color: rgba(2, 95, 255, 0.9);
+	border-radius: 25px;
+	cursor: pointer;
+	font-size: 1rem;
+	font-weight: bold;
+	transition: all 0.3s ease;
+}
+
+.navigationButton:hover {
+	background: rgba(2, 95, 255, 0.9);
+	color: white;
+	transform: scale(1.05);
 }
 
 .closeButton {
@@ -299,26 +305,6 @@ body {
 	transform: scale(1.05);
 }
 
-/* 导航按钮样式 */
-.navigationButton {
-	display: block;
-	margin: 10px auto 0 auto;
-	padding: 12px 30px;
-	border: 2px solid rgba(2, 95, 255, 0.9);
-	background: white;
-	color: rgba(2, 95, 255, 0.9);
-	border-radius: 25px;
-	cursor: pointer;
-	font-size: 1rem;
-	font-weight: bold;
-	transition: all 0.3s ease;
-}
-
-.navigationButton:hover {
-	background: rgba(2, 95, 255, 0.9);
-	color: white;
-	transform: scale(1.05);
-}
 
 @media (max-width: 480px) {
 	.header {
@@ -340,7 +326,7 @@ body {
 		font-size: 1.1rem;
 	}
 
-	.Button {
+	.filterBtn {
 		padding: 12px 25px;
 		font-size: 0.9rem;
 	}
@@ -356,10 +342,5 @@ body {
 
 	.mapHeader h3 {
 		font-size: 1rem;
-	}
-
-	.mapLegend {
-		font-size: 0.8rem;
-		padding: 8px 10px;
 	}
 }

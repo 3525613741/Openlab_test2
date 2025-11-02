@@ -1,5 +1,6 @@
 const API_BASE_URL = 'http://localhost:3000/api';
 let userLocation = null;
+let userLocationwgs = null;
 let baiduMap = null;
 let parkingLotsData = [];
 
@@ -12,9 +13,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 //先初始化用户位置
-async function initUserLocation(){
+async function initUserLocation() {
     return new Promise((resolve) => {
-        if(!navigator.geolocation){
+        if (!navigator.geolocation) {
             showError('定位失败');
             resolve();
             return;
@@ -24,17 +25,22 @@ async function initUserLocation(){
             (position) => {
                 const wgsLng = position.coords.longitude;
                 const wgsLat = position.coords.latitude;
+                userLocationwgs = {
+                    lat: wgsLat,
+                    lng: wgsLng
+                };
                 const convertor = new BMap.Convertor();
                 const pointArr = [new BMap.Point(wgsLng, wgsLat)];
 
                 convertor.translate(pointArr, 1, 5, (data) => {
-                    if(data.status === 0) {
+                    if (data.status === 0) {
                         userLocation = {
                             lat: data.points[0].lat,
                             lng: data.points[0].lng
                         };
                         resolve();
-                    } else {
+                    }
+                    else {
                         showError('定位失败');
                         resolve();
                     }
@@ -53,14 +59,14 @@ async function initUserLocation(){
         );
     });
 }
-
 // 加载停车场列表
 async function loadParkingLots() {
     try {
         const response = await fetch(`${API_BASE_URL}/parking-lots`);
         parkingLotsData = await response.json();
         renderParkingLots(parkingLotsData);
-    } catch (error) {
+    }
+    catch (error) {
         console.error('加载停车场数据失败:', error);
         showError('加载数据失败，请检查后端服务是否运行');
     }
@@ -76,7 +82,7 @@ function renderParkingLots(parkingLots) {
         card.className = 'parkingLot';
         card.innerHTML = `
             <h3>${lot.name}</h3>
-            <p>详细信息：${lot.info}</p>
+            <p>详细信息：${lot.address}</p>
             <p>中心点：${lot.lat}, ${lot.lng}</p>
             <p><strong>可用车辆：${lot.vehicleCount} 辆</strong></p>
             ${lot.distance ? `<p class="distance">距离您：${lot.distance}米</p>` : ''}
@@ -150,23 +156,23 @@ function setupFilterButton() {
             const response = await fetch(`${API_BASE_URL}/nearby-parking-lots`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userLocation)
+                body: JSON.stringify(userLocationwgs)
             });
 
             const nearbyLots = await response.json();
-            parkingLotsData = nearbyLots;
             renderParkingLots(nearbyLots);
             showNearbyPopup(nearbyLots);
 
             filterBtn.textContent = '重新寻找';
             filterBtn.disabled = false;
-        } catch (error) {
+        }
+        catch (error) {
             console.error('寻找失败:', error);
             showError('寻找失败，请重试');
             filterBtn.textContent = '寻找附近';
             filterBtn.disabled = false;
         }
-    });  
+    });
 }
 
 
@@ -232,6 +238,7 @@ function initBaiduMap(centerLocation) {
         baiduMap.addControl(new BMap.ScaleControl());
     }
     baiduMap.clearOverlays();
+
     const point = new BMap.Point(centerLocation.lng, centerLocation.lat);
     baiduMap.centerAndZoom(point, 16);
 
@@ -241,11 +248,13 @@ function initBaiduMap(centerLocation) {
     }, 200);
 
     const userMarker = new BMap.Marker(point);
+    userMarker.setTitle('您当前的位置');
     baiduMap.addOverlay(userMarker);
     userMarker.setAnimation(BMAP_ANIMATION_BOUNCE);
     setTimeout(() => userMarker.setAnimation(null), 1000);
 }
 
+//渲染地图上的停车场
 async function renderParkingLotsOnMap() {
     if (!baiduMap || parkingLotsData.length === 0) return;
 
@@ -257,15 +266,17 @@ async function renderParkingLotsOnMap() {
     baiduMap.addOverlay(userMarker);
     userMarker.setAnimation(BMAP_ANIMATION_BOUNCE);
     setTimeout(() => userMarker.setAnimation(null), 1000);
+
     const userInfoWindow = new BMap.InfoWindow("<strong>您当前的位置</strong>", {
         width: 150,
         height: 50
     });
-    userMarker.addEventListener("click", function() {
+
+    userMarker.addEventListener("click", () => {
         baiduMap.openInfoWindow(userInfoWindow, userPoint);
     });
 
-    for (const lot of parkingLotsData){
+    for (const lot of parkingLotsData) {
         const lotPoint = new BMap.Point(lot.lng, lot.lat);
         const lotMarker = new BMap.Marker(lotPoint);
         lotMarker.setTitle(lot.name);
@@ -274,21 +285,16 @@ async function renderParkingLotsOnMap() {
             <div>
                 <strong>${lot.name}</strong><br>
                 可用车辆：${lot.vehicleCount} 辆<br>
-                详细信息：${lot.info}
+                具体位置：${lot.address}
             </div>`;
         addInfoWindow(lotMarker, lotInfo);
 
-        const polygonPoints = [
-            new BMap.Point(lot.lng + 0.00012, lot.lat + 0.00012),
-            new BMap.Point(lot.lng - 0.00012, lot.lat + 0.00012),
-            new BMap.Point(lot.lng - 0.00012, lot.lat - 0.00012),
-            new BMap.Point(lot.lng + 0.00012, lot.lat - 0.00012)
-        ];
+        const polygonPoints = lot.polygon.map(p => new BMap.Point(p.lng, p.lat));
         const polygon = new BMap.Polygon(polygonPoints, {
             strokeColor: "blue",
             strokeWeight: 2,
             strokeOpacity: 0.5,
-            fillColor: "#a0c8ff",
+            fillColor: "rgb(160, 200, 255)",
             fillOpacity: 0.3
         });
         baiduMap.addOverlay(polygon);
@@ -313,6 +319,7 @@ async function renderParkingLotsOnMap() {
     }
 }
 
+// 添加信息窗口
 function addInfoWindow(target, content) {
     const infoWindow = new BMap.InfoWindow(content, {
         width: 200,
@@ -331,8 +338,10 @@ async function navigateToParking(name, lat, lng) {
         showError('无法获取您的位置，请先允许定位权限');
         return;
     }
+
     const popup = document.querySelector('.popupOverlay');
     if (popup) popup.remove();
+
     const mapContainer = document.getElementById('mapContainer');
     mapContainer.style.display = 'flex';
 
@@ -340,35 +349,36 @@ async function navigateToParking(name, lat, lng) {
         initBaiduMap(userLocation);
     }
 
-    baiduMap.clearOverlays();
-    
     const start = new BMap.Point(userLocation.lng, userLocation.lat);
     const end = new BMap.Point(lng, lat);
+    baiduMap.clearOverlays();
 
-    const polygonPoints = [
-        new BMap.Point(end.lng + 0.0001, end.lat + 0.0001),
-        new BMap.Point(end.lng - 0.0001, end.lat + 0.0001),
-        new BMap.Point(end.lng - 0.0001, end.lat - 0.0001),
-        new BMap.Point(end.lng + 0.0001, end.lat - 0.0001)
-    ];
-    const polygon = new BMap.Polygon(polygonPoints, {
-        strokeColor: "blue",
-        strokeWeight: 2,
-        strokeOpacity: 0.5,
-        fillColor: "#a0c8ff",
-        fillOpacity: 0.3
-    });
-    baiduMap.addOverlay(polygon);
-    
-    const lotPoint = new BMap.Point(end.lng, end.lat);
-    const lotMarker = new BMap.Marker(lotPoint, {
-        icon: new BMap.Icon("https://api.map.baidu.com/images/marker_red.png", new BMap.Size(20, 25))
-    });
-        baiduMap.addOverlay(lotMarker);
+    const lot = parkingLotsData.find(l => l.name === name);
+    if (lot) {
+        const polygonPoints = lot.polygon.map(p => new BMap.Point(p.lng, p.lat));
+        const polygon = new BMap.Polygon(polygonPoints, {
+            strokeColor: "blue",
+            strokeWeight: 2,
+            strokeOpacity: 0.5,
+            fillColor: "rgb(160, 200, 255)",
+            fillOpacity: 0.3
+        });
+        baiduMap.addOverlay(polygon);
+    }
+    else {
+        console.warn(`未获取到名为 "${name}" 的停车点数据。`);
+    }
+
     const userMarker = new BMap.Marker(start);
+    userMarker.setTitle('您当前的位置');
     baiduMap.addOverlay(userMarker);
     userMarker.setAnimation(BMAP_ANIMATION_BOUNCE);
     setTimeout(() => userMarker.setAnimation(null), 1000);
+
+    const lotPoint = new BMap.Point(end.lng, end.lat);
+    const lotMarker = new BMap.Marker(lotPoint);
+    lotMarker.setTitle(lot.name);
+    baiduMap.addOverlay(lotMarker);
 
     const res = await fetch(`${API_BASE_URL}/parking-lots/${encodeURIComponent(name)}/vehicles`);
     const vehicles = await res.json();
@@ -387,10 +397,10 @@ async function navigateToParking(name, lat, lng) {
         addInfoWindow(vehicleMarker, info);
     });
 
-    const driving = new BMap.DrivingRoute(baiduMap, {
-        renderOptions:{map: baiduMap, autoViewPort: true},
+    const riding = new BMap.RidingRoute(baiduMap, {
+        renderOptions: { map: baiduMap, autoViewPort: true },
     });
-    driving.search(start, end);
+    riding.search(start, end);
 }
 
 // 显示错误信息
@@ -430,5 +440,5 @@ function showMessage(message) {
         if (e.target.classList.contains('popupOverlay') || e.target.classList.contains('closeButton')) {
             popup.remove();
         }
-    }); 
+    });
 }

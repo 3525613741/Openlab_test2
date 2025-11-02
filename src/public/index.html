@@ -6,11 +6,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>地图找车</title>
 	<link rel="stylesheet" href="style.css">
-	<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=pmEiHxWExMjQk9E3VlaYOy4Zl11N8fF5"></script>
+	<script type="text/javascript"
+		src="https://api.map.baidu.com/api?v=3.0&ak=pmEiHxWExMjQk9E3VlaYOy4Zl11N8fF5"></script>
 </head>
 
 <body>
-	<!--设置背景 将header改为map按钮-->
 	<div class="backgroundContainer">
 		<button class="header" id="showMapBtn">
 			我心我行澄如明镜(点击有惊喜)
@@ -24,9 +24,6 @@
 			<h3>停车场地图导航</h3>
 		</div>
 		<div class="baiduMap" id="baiduMap"></div>
-		<div class="mapLegend">
-			<span>📍：当前位置</span>
-		</div>
 	</div>
 
 	<!-- 主页面设置 防止未加载出来一片空白-->
@@ -36,7 +33,7 @@
 
 	<!--筛选按钮-->
 	<div class="buttonPosition">
-		<button class="Button" id="filterBtn">
+		<button class="filterBtn" id="filterBtn">
 			寻找附近
 		</button>
 	</div>
